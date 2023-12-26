@@ -133,6 +133,7 @@ module "alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
+      target_id        = blog_asg.autoscaling_group_target_group_arns
     }
   }
   
