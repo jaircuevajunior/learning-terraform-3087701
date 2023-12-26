@@ -33,8 +33,6 @@ module "blog_vpc" {
   }
 }
 
-
-
 module "blog_asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
 
@@ -83,7 +81,7 @@ module "blog_asg" {
     availability_zone = "us-west-1a"
   }
 
-  target_group_arns = [module.blog_alb.target_groups["ex-instance"].arn]
+  target_group_arns = module.blog_alb.target_group_arns
 
   tag_specifications = [
     {
@@ -100,13 +98,6 @@ module "blog_asg" {
 
   tags = {
     Environment = "dev"
-  }
-}
-
-data "aws_instances" "blog_instances" {
-  filter {
-    name   = "tag:Name"
-    values = ["blog_asg"]
   }
 }
 
@@ -131,12 +122,10 @@ module "blog_alb" {
 
   target_groups = {
     ex-instance = {
-      name_prefix      = "blog-"
-      protocol         = "HTTP"
-      port             = 80
-      create_attachment= false
-      #target_type      = "instance"
-      #target_id        = data.aws_instances.blog_instances.ids
+      name_prefix       = "blog-"
+      protocol          = "HTTP"
+      port              = 80
+      create_attachment = false
     }
   }
   
