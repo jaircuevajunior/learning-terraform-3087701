@@ -104,6 +104,14 @@ module "blog_asg" {
   }
 }
 
+data "aws_instances" "blog_instances" {
+  instance_tags = {
+    Name = "blog-ec2"
+  }
+
+  instance_state_names = ["running", "stopped"]
+}
+
 module "blog_alb" {
   source = "terraform-aws-modules/alb/aws"
 
@@ -129,6 +137,7 @@ module "blog_alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
+      target_id       = data.aws_instances.blog_instances.ids
     }
   }
   
