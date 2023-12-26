@@ -105,7 +105,7 @@ module "blog_asg" {
 
 data "aws_instances" "blog_instances" {
   instance_tags = {
-    Name = "blog-asg"
+    Name = "blog_asg"
   }
 }
 
@@ -134,7 +134,7 @@ module "blog_alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
-      target_id        = data.aws_instances.blog_instances.id
+      target_id        = data.aws_instances.blog_instances.ids
     }
   }
   
