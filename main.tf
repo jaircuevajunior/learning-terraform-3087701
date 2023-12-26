@@ -129,7 +129,6 @@ module "blog_alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
-      target_id       = "i-0a21bb502367fe450"
     }
   }
   
