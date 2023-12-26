@@ -83,7 +83,7 @@ module "blog_asg" {
     availability_zone = "us-west-1a"
   }
 
-  target_group_arns = module.blog_alb.target_groups["ex-instance"].arn
+  target_group_arns = [module.blog_alb.target_groups["ex-instance"].arn]
 
   tag_specifications = [
     {
