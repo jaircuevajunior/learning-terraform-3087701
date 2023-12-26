@@ -83,7 +83,7 @@ module "blog_asg" {
     availability_zone = "us-west-1a"
   }
 
-  target_group_arns = [module.blog_alb.arn]
+  target_group_arns = module.blog_alb.target_group_arns
 
   tag_specifications = [
     {
@@ -125,7 +125,7 @@ module "blog_alb" {
 
   target_groups = {
     ex-instance = {
-      name_prefix      = "h1"
+      name_prefix      = "blog-"
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
