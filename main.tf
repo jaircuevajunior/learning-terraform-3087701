@@ -105,6 +105,8 @@ module "blog_asg" {
 }
 
 data "aws_instances" "blog_instances" {
+  depends_on = [module.blog_asg]
+
   instance_tags = {
     Name = "blog-ec2"
   }
@@ -137,7 +139,7 @@ module "blog_alb" {
       protocol         = "HTTP"
       port             = 80
       target_type      = "instance"
-      target_id       = data.aws_instances.blog_instances.ids
+      target_id        = data.aws_instances.blog_instances.id
     }
   }
   
