@@ -108,8 +108,6 @@ data "aws_instances" "blog_instances" {
   instance_tags = {
     Name = "blog-ec2"
   }
-
-  instance_state_names = ["running", "stopped"]
 }
 
 module "blog_alb" {
