@@ -49,9 +49,9 @@ module "blog_asg" {
   vpc_zone_identifier       = module.blog_vpc.public_subnets
 
   # Launch template
-  #launch_template_name        = "example-asg"
-  #launch_template_description = "Launch template example"
-  #update_default_version      = true
+  launch_template_name        = "blog_lt"
+  launch_template_description = "Launch template example"
+  update_default_version      = true
 
   image_id          = data.aws_ami.app_ami.id
   instance_type     = "t3a.micro"
@@ -70,39 +70,6 @@ module "blog_asg" {
     AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   }
 
-  block_device_mappings = [
-    {
-      # Root volume
-      device_name = "/dev/xvda"
-      no_device   = 0
-      ebs = {
-        delete_on_termination = true
-        encrypted             = true
-        volume_size           = 20
-        volume_type           = "gp2"
-      }
-    }, {
-      device_name = "/dev/sda1"
-      no_device   = 1
-      ebs = {
-        delete_on_termination = true
-        encrypted             = true
-        volume_size           = 30
-        volume_type           = "gp2"
-      }
-    }
-  ]
-
-
-  # This will ensure imdsv2 is enabled, required, and a single hop which is aws security
-  # best practices
-  # See https://docs.aws.amazon.com/securityhub/latest/userguide/autoscaling-controls.html#autoscaling-4
-  metadata_options = {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 1
-  }
-
   network_interfaces = [
     {
       delete_on_termination = true
@@ -119,7 +86,10 @@ module "blog_asg" {
   tag_specifications = [
     {
       resource_type = "instance"
-      tags          = { WhatAmI = "Instance" }
+      tags          = {
+        WhatAmI = "Instance"
+        Name = "blog-ec2"
+      }
     },
     {
       resource_type = "volume"
@@ -156,6 +126,14 @@ module "alb" {
       }
     }
   }
+
+  target_groups = {
+    ex-instance = {
+      name_prefix      = "blog-"
+      protocol         = "HTTP"
+      port             = 80
+      target_type      = "instance"
+    }
 
   tags = {
     Environment = "dev"
