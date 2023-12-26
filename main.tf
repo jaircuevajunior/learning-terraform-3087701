@@ -81,7 +81,7 @@ module "blog_asg" {
     availability_zone = "us-west-1a"
   }
 
-  target_group_arns = module.blog_alb.target_group_arns
+  target_group_arns = module.blog_alb.target_groups.ids
 
   tag_specifications = [
     {
@@ -108,6 +108,8 @@ module "blog_alb" {
   vpc_id          = module.blog_vpc.vpc_id
   subnets         = module.blog_vpc.public_subnets
   security_groups = [module.blog_sg.security_group_id]
+  
+  enable_deletion_protection = false
 
   listeners = {
     ex-http-https-redirect = {
