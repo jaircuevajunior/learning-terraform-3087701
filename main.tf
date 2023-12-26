@@ -104,8 +104,9 @@ module "blog_asg" {
 }
 
 data "aws_instances" "blog_instances" {
-  instance_tags = {
-    Name = "blog_asg"
+  filter {
+    name   = "tag:Name"
+    values = ["blog_asg"]
   }
 }
 
