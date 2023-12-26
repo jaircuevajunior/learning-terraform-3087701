@@ -83,6 +83,8 @@ module "blog_asg" {
     availability_zone = "us-west-1a"
   }
 
+  target_group_arns = module.blog_alb.arn
+
   tag_specifications = [
     {
       resource_type = "instance"
@@ -102,7 +104,7 @@ module "blog_asg" {
   }
 }
 
-module "alb" {
+module "blog_alb" {
   source = "terraform-aws-modules/alb/aws"
 
   name            = "blog-alb"
@@ -118,15 +120,6 @@ module "alb" {
       forward = {
         target_group_key = "ex-instance"
       }
-    }
-  }
-
-  target_groups = {
-    ex-instance = {
-      name_prefix      = "blog-"
-      protocol         = "HTTP"
-      port             = 80
-      target_type      = "instance"
     }
   }
   
