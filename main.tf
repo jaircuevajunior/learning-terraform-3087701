@@ -90,7 +90,6 @@ module "blog_asg" {
       resource_type = "instance"
       tags          = {
         WhatAmI = "Instance"
-        Name = "blog-ec2"
       }
     },
     {
@@ -106,7 +105,7 @@ module "blog_asg" {
 
 data "aws_instances" "blog_instances" {
   instance_tags = {
-    Name = "blog-ec2"
+    Name = "blog-asg"
   }
 }
 
