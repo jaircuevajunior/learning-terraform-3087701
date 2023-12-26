@@ -105,8 +105,6 @@ module "blog_asg" {
 }
 
 data "aws_instances" "blog_instances" {
-  depends_on = [module.blog_asg]
-
   instance_tags = {
     Name = "blog-ec2"
   }
