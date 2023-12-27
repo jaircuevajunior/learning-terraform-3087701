@@ -39,7 +39,7 @@ module "blog_asg" {
   version = "7.3.1"
 
   # Autoscaling group
-  name = "blog_asg"
+  name = "${var.env.name}-blog_asg"
 
   min_size                  = var.asg_settings.min_size
   max_size                  = var.asg_settings.max_size
